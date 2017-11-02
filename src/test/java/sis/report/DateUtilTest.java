@@ -13,7 +13,7 @@ public class DateUtilTest {
 
     @Test
     public void createDateTest() {
-        Date date = new DateUtil().createDate(2000, 1, 1);
+        Date date = DateUtil.createDate(2000, 1, 1);
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
 

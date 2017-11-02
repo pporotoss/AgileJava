@@ -7,24 +7,24 @@ public class CourseSession {
     public static final String NEWLINE = System.getProperty("line.seperator");
     public static final String ROSTER_REPORT_HEADER = "sis.studentinfo.Student"+ NEWLINE + "-" + NEWLINE;
     public static final String ROSTER_REPORT_FOOTER = NEWLINE + "# students = ";
+    private static int count;
 
     private String department;
     private String number;
     private List<Student> students = new ArrayList<>();
     private Date startDate;
+    private int numberOfCredits;
 
-
-    public CourseSession(String department, String number) {
-        this.department = department;
-        this.number = number;
-    }
-    
-    public CourseSession(String department, String number, Date startDate) {
+    private CourseSession(String department, String number, Date startDate) {
         this.department = department;
         this.number = number;
         this.startDate = startDate;
     }
-    
+
+    public static void incrementCount() {
+        ++count;
+    }
+
     public String getDepartment() {
         return department;
     }
@@ -38,6 +38,7 @@ public class CourseSession {
     }
     
     public void enroll(Student student) {
+        student.addCredits(numberOfCredits);
         students.add(student);
     }
     
@@ -59,5 +60,22 @@ public class CourseSession {
 
     public List<Student> getAllStudents() {
         return students;
+    }
+
+    public static void resetCount() {
+        count = 0;
+    }
+
+    public static int getCount() {
+        return count;
+    }
+
+    public static CourseSession create(String department, String number, Date startDate) {
+        incrementCount();
+        return new CourseSession(department, number, startDate);
+    }
+
+    public void setNumberOfCredits(int numberOfCredits) {
+        this.numberOfCredits = numberOfCredits;
     }
 }

@@ -6,12 +6,13 @@ import sis.studentinfo.CourseSession;
 import sis.studentinfo.Student;
 
 import static org.junit.Assert.assertEquals;
+import static sis.report.ReportConstant.NEWLINE;
 
 public class RosterRepoterTest {
 
     @Test
     public void rosterReportTest() {
-        CourseSession session = new CourseSession("ENGL", "101", new DateUtil().createDate(2003, 1 , 6));
+        CourseSession session = CourseSession.create("ENGL", "101", DateUtil.createDate(2003, 1 , 6));
 
         session.enroll(new Student("A"));
         session.enroll(new Student("B"));
@@ -22,10 +23,10 @@ public class RosterRepoterTest {
 
         assertEquals(
             RosterRepoter.ROSTER_REPORT_HEADER +
-            "A" + RosterRepoter.NEWLINE +
-            "B" + RosterRepoter.NEWLINE +
+            "A" + NEWLINE +
+            "B" + NEWLINE +
             RosterRepoter.ROSTER_REPORT_FOOTER + "2" +
-            RosterRepoter.NEWLINE, rosterReport);
+            NEWLINE, rosterReport);
 
     }
 }
