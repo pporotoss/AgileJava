@@ -18,10 +18,14 @@ public class CourseReportTest {
         report.add(CourseSession.create("ENGL", "101", date));
         report.add(CourseSession.create("CZEC", "200", date));
         report.add(CourseSession.create("ITAL", "400", date));
+        report.add(CourseSession.create("CZEC", "220", date));
+        report.add(CourseSession.create("ITAL", "330", date));
 
         assertEquals(
                 "CZEC 200" + NEW_LINE
+                + "CZEC 220" + NEW_LINE
                 + "ENGL 101" + NEW_LINE
+                + "ITAL 330" + NEW_LINE
                 + "ITAL 400" + NEW_LINE,
                 report.text()
         );
@@ -37,5 +41,9 @@ public class CourseReportTest {
 
         CourseSession sessionC = CourseSession.create("CMSC", "101", date);
         assertEquals(0, sessionA.compareTo(sessionC));
+        
+        CourseSession sessionD = CourseSession.create("CMSC", "210", date);
+        assertTrue(sessionC.compareTo(sessionD) < 0);
+        assertTrue(sessionD.compareTo(sessionC) > 0);
     }
 }

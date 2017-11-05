@@ -8,6 +8,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class StudentTest {
+    private static final double GRADE_TOLERANCE = 0.05;
     
     @Test
     public void testCreate() {
@@ -65,5 +66,25 @@ public class StudentTest {
 
         student.setState("MD");
         assertFalse(student.isInstate());
+    }
+    
+    @Test
+    public void testCalculateGpa() {
+        Student student = new Student("a");
+        assertGpa(student, 0);
+        student.addGrade(Student.Grade.A);
+        assertGpa(student, 4);
+        student.addGrade(Student.Grade.B);
+        assertGpa(student, 3.5);
+        student.addGrade(Student.Grade.C);
+        assertGpa(student, 3);
+        student.addGrade(Student.Grade.D);
+        assertGpa(student, 2.5);
+        student.addGrade(Student.Grade.F);
+        assertGpa(student, 2);
+    }
+    
+    private void assertGpa(Student student, double expectedGpa) {
+        assertEquals(expectedGpa, student.getGpa(), GRADE_TOLERANCE);
     }
 }
