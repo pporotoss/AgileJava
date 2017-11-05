@@ -2,7 +2,7 @@ package sis.studentinfo;
 
 import java.util.*;
 
-public class CourseSession {
+public class CourseSession implements Comparable<CourseSession> {
 
     public static final String NEWLINE = System.getProperty("line.seperator");
     public static final String ROSTER_REPORT_HEADER = "sis.studentinfo.Student"+ NEWLINE + "-" + NEWLINE;
@@ -77,5 +77,10 @@ public class CourseSession {
 
     public void setNumberOfCredits(int numberOfCredits) {
         this.numberOfCredits = numberOfCredits;
+    }
+
+    @Override
+    public int compareTo(CourseSession session) {
+        return this.getDepartment().compareTo(session.getDepartment());
     }
 }
