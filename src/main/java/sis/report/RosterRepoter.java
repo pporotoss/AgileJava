@@ -10,9 +10,9 @@ public class RosterRepoter {
     public static final String ROSTER_REPORT_HEADER = "sis.studentinfo.Student"+ NEWLINE + "-" + NEWLINE;
     public static final String ROSTER_REPORT_FOOTER = NEWLINE + "# students = ";
 
-    private CourseSession session;
+    private Session session;
 
-    public RosterRepoter(CourseSession session) {
+    public RosterRepoter(Session session) {
         this.session = session;
     }
 
