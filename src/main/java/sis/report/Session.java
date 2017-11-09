@@ -2,16 +2,19 @@ package sis.report;
 
 import sis.studentinfo.Student;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 
-public abstract class Session implements Comparable<Session>{
+public abstract class Session implements Comparable<Session>, Iterable<Student>{
     private static int count;
     private String department;
     private String number;
     private List<Student> students = new ArrayList<>();
     private Date startDate;
     private int numberOfCredits;
-    
+    private URL url;
+
     protected Session (String department, String number, Date startDate) {
         this.department = department;
         this.number = number;
@@ -61,7 +64,7 @@ public abstract class Session implements Comparable<Session>{
     public int getNumberOfStudents() {
         return students.size();
     }
-    
+
     public void enroll(Student student) {
         student.addCredits(numberOfCredits);
         students.add(student);
@@ -79,5 +82,32 @@ public abstract class Session implements Comparable<Session>{
         }
         return compare;
     }
-    
+
+    public double averageGpaForPartTimeStudents() {
+        double total = 0;
+        int count = 0;
+
+        for (Student student : students) {
+            if(student.isFullTime()) {
+                continue;
+            }
+            total += student.getGpa();
+            count++;
+        }
+        if(count == 0) return 0;
+        return total / count;
+    }
+
+    @Override
+    public Iterator<Student> iterator() {
+        return students.iterator();
+    }
+
+    public void setUrl(String url) throws MalformedURLException {
+        this.url = new URL(url);
+    }
+
+    public URL getUrl() {
+        return url;
+    }
 }

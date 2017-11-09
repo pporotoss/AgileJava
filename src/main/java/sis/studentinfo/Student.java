@@ -1,7 +1,10 @@
 package sis.studentinfo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Student {
 
@@ -13,11 +16,40 @@ public class Student {
     private String state;
     private List<Grade> grades = new ArrayList<>();
     private GradingStrategy gradingStrategy = new BasicGradingStrategy();
+    private String firstName;
+    private String middleName;
+    private String lastName;
+    private List<Integer> charges = new ArrayList<>();
 
-    public Student(String name) {
-        this.name = name;
+    public Student(String fullName) {
+        this.name = fullName;
+        List<String> nameParts = split(fullName);
+        setName(nameParts);
     }
-    
+
+    private List<String> split(String name) {
+       return Stream.of(name.split(" ")).collect(Collectors.toList());
+    }
+
+    private void setName(List<String> nameParts) {
+        this.lastName = removeLast(nameParts);
+        String name = removeLast(nameParts);
+
+        if(nameParts.isEmpty()) {
+            this.firstName = name;
+            this.middleName = "";
+        }
+        else {
+            this.middleName = name;
+            this.firstName = removeLast(nameParts);
+        }
+    }
+
+    private String removeLast(List<String> nameParts) {
+        if(nameParts.isEmpty()) return "";
+        return nameParts.remove(nameParts.size() - 1);
+    }
+
     public String getName() {
         return name;
     }
@@ -56,11 +88,35 @@ public class Student {
     public void addGrade(Grade grade) {
         grades.add(grade);
     }
-    
+
     public void setGradingStrategy(GradingStrategy gradingStrategy) {
         this.gradingStrategy = gradingStrategy;
     }
-    
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void addCharge(int charge) {
+        charges.add(charge);
+    }
+
+    public int getTotalCharges() {
+        int total = 0;
+        for(int charge : charges) {
+            total += charge;
+        }
+        return total;
+    }
+
     public enum Grade{
         A(4), B(3), C(2), D(1), F(0);
         

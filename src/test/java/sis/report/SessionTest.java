@@ -5,9 +5,12 @@ import org.junit.Test;
 import sis.studentinfo.CourseSession;
 import sis.studentinfo.Student;
 
+import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static sis.studentinfo.DateUtil.createDate;
 
@@ -71,5 +74,60 @@ public abstract class SessionTest {
     public void testSessionLength() {
         Session session = createSession("", "", new Date());
         assertTrue(session.getSessionLength() > 0);
+    }
+    
+    @Test
+    public void testAverageGpaForPartTimeStudents() {
+        session.enroll(createFullTimeStudent());
+
+        Student partTimer1 = new Student("1");
+        partTimer1.addGrade(Student.Grade.A);
+        session.enroll(partTimer1);
+
+        session.enroll(createFullTimeStudent());
+
+        Student partTimer2 =new Student("2");
+        partTimer2.addGrade(Student.Grade.B);
+        session.enroll(partTimer2);
+
+        assertEquals(3.5, session.averageGpaForPartTimeStudents(), 0.05);
+    }
+
+    private Student createFullTimeStudent() {
+        Student student = new Student("a");
+        student.addCredits(Student.CREDITS_REQUIRED_FOR_FULL_TIME);
+        return student;
+    }
+
+    @Test
+    public void testIterate() {
+        enrollStudents(session);
+
+        List<Student> results = new ArrayList<>();
+        for(Student student : session) {
+            results.add(student);
+        }
+    }
+
+    private void enrollStudents(Session session) {
+        session.enroll(new Student("1"));
+        session.enroll(new Student("2"));
+        session.enroll(new Student("3"));
+    }
+
+    @Test
+    public void testCharges() {
+        Student student = new Student("a");
+        student.addCharge(500);
+        student.addCharge(200);
+        student.addCharge(399);
+        assertEquals(1099, student.getTotalCharges());
+    }
+
+    @Test
+    public void testSessionUrl() throws MalformedURLException {
+        final String url = "http://course.langrsoft.com/cmsc300";
+        session.setUrl(url);
+        assertEquals(url, session.getUrl().toString());
     }
 }
