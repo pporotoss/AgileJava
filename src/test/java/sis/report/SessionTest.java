@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import sis.studentinfo.CourseSession;
 import sis.studentinfo.Student;
+import sis.studentinfo.StudentNameFormatException;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
 import static sis.studentinfo.DateUtil.createDate;
 
@@ -125,9 +127,32 @@ public abstract class SessionTest {
     }
 
     @Test
-    public void testSessionUrl() throws MalformedURLException {
+    public void testSessionUrl() throws SessionException {
         final String url = "http://course.langrsoft.com/cmsc300";
         session.setUrl(url);
         assertEquals(url, session.getUrl().toString());
+    }
+    
+    @Test
+    public void testInvalidSessionUrl() {
+        final String url = "httpsp://course.langrsoft.com/cmsc300";
+        try {
+            session.setUrl(url);
+            fail("expected exection due to invalid protocol in URL");
+        } catch (SessionException expectedException) {
+            Throwable cause = expectedException.getCause();
+            assertEquals(MalformedURLException.class, cause.getClass());
+        }
+    }
+    
+    @Test
+    public void testBadlyFormattedName() {
+        try {
+            new Student("a b c d");
+            fail("expected exception from 4-part name");
+        }
+        catch (StudentNameFormatException excpectedException) {
+            assertEquals("Student name 'a b c d' contains more than 3 parts", excpectedException.getMessage());
+        }
     }
 }

@@ -103,10 +103,21 @@ public abstract class Session implements Comparable<Session>, Iterable<Student>{
         return students.iterator();
     }
 
-    public void setUrl(String url) throws MalformedURLException {
-        this.url = new URL(url);
+    public void setUrl(String url) throws SessionException {
+        try {
+            this.url = new URL(url);
+        }
+        catch (MalformedURLException e) {
+            log(e);
+            throw new SessionException(e);
+        }
+        
     }
-
+    
+    private void log(Exception e) {
+    
+    }
+    
     public URL getUrl() {
         return url;
     }
