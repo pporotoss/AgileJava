@@ -1,11 +1,10 @@
-package sis.report;
+package sis.studentinfo;
 
 import org.junit.Test;
 import sis.studentinfo.Student;
+import sis.studentinfo.StudentNameFormatException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class StudentTest {
     private static final double GRADE_TOLERANCE = 0.05;
@@ -102,5 +101,17 @@ public class StudentTest {
     
     private void assertGpa(Student student, double expectedGpa) {
         assertEquals(expectedGpa, student.getGpa(), GRADE_TOLERANCE);
+    }
+    
+    @Test
+    public void testBadlyFormattedName() {
+        final String studentName = "a b c d";
+        try {
+            new Student(studentName);
+            fail("expected exception from 4-part name");
+        }
+        catch (StudentNameFormatException expectedException) {
+            assertEquals(Student.TOO_MANY_NAME_PARTS_MSG, Student.MAX_NAME_PARTS, expectedException.getMessage());
+        }
     }
 }

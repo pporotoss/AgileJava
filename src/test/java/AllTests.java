@@ -4,6 +4,7 @@ import sis.report.*;
 import sis.studentinfo.BasicGradingStrategyTest;
 import sis.studentinfo.HonorsGradingStrategyTest;
 import sis.studentinfo.RosterRepoterTest;
+import sis.studentinfo.StudentTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({

@@ -1,7 +1,6 @@
 package sis.studentinfo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -10,6 +9,8 @@ public class Student {
 
     public static final int CREDITS_REQUIRED_FOR_FULL_TIME = 12;
     public static final String IN_STATE = "CO";
+    static final int MAX_NAME_PARTS = 3;
+    static final String TOO_MANY_NAME_PARTS_MSG = "Student name '%s' contains more than %d parts";
     
     private String name;
     private int credits;
@@ -20,13 +21,13 @@ public class Student {
     private String middleName;
     private String lastName;
     private List<Integer> charges = new ArrayList<>();
-
+    
+    
     public Student(String fullName) {
         this.name = fullName;
         List<String> nameParts = split(fullName);
-        final int maximumNumberOfNameParts = 3;
-        if(nameParts.size() > maximumNumberOfNameParts) {
-            String message = "Student name '" + fullName + "' contains more than " + maximumNumberOfNameParts + " parts";
+        if(nameParts.size() > MAX_NAME_PARTS) {
+            String message = String.format(TOO_MANY_NAME_PARTS_MSG, fullName, MAX_NAME_PARTS);
             throw new StudentNameFormatException(message);
         }
         setName(nameParts);
