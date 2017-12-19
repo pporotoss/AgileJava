@@ -4,6 +4,9 @@ import org.junit.Test;
 import sis.studentinfo.Student;
 import sis.studentinfo.StudentNameFormatException;
 
+import java.util.logging.Handler;
+import java.util.logging.Logger;
+
 import static org.junit.Assert.*;
 
 public class StudentTest {
@@ -105,13 +108,24 @@ public class StudentTest {
     
     @Test
     public void testBadlyFormattedName() {
+        Handler handler = new TestHandler();
+        Student.logger.addHandler(handler);
+
         final String studentName = "a b c d";
         try {
             new Student(studentName);
             fail("expected exception from 4-part name");
         }
         catch (StudentNameFormatException expectedException) {
-            assertEquals(Student.TOO_MANY_NAME_PARTS_MSG, Student.MAX_NAME_PARTS, expectedException.getMessage());
+            String message = String.format(Student.TOO_MANY_NAME_PARTS_MSG, studentName, Student.MAX_NAME_PARTS);
+            assertEquals(message, expectedException.getMessage());
+            assertEquals(message, ((TestHandler)handler).getMessage());
+            assertTrue(wasLogged(message, (TestHandler) handler));
         }
+    }
+
+    private boolean wasLogged(String message, TestHandler handler) {
+        // 테스트 안까먹기 위해 false 반환
+        return message.equals(handler.getMessage());
     }
 }

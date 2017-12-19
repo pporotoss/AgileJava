@@ -2,10 +2,12 @@ package sis.studentinfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Student {
+    final static Logger logger = Logger.getLogger(Student.class.getName());
 
     public static final int CREDITS_REQUIRED_FOR_FULL_TIME = 12;
     public static final String IN_STATE = "CO";
@@ -21,16 +23,21 @@ public class Student {
     private String middleName;
     private String lastName;
     private List<Integer> charges = new ArrayList<>();
-    
-    
+
     public Student(String fullName) {
         this.name = fullName;
         List<String> nameParts = split(fullName);
         if(nameParts.size() > MAX_NAME_PARTS) {
             String message = String.format(TOO_MANY_NAME_PARTS_MSG, fullName, MAX_NAME_PARTS);
+            logger.info(message);
             throw new StudentNameFormatException(message);
         }
         setName(nameParts);
+    }
+
+    private void log(String message) {
+        Logger logger = Logger.getLogger(getClass().getName());
+        logger.info(message);
     }
 
     private List<String> split(String name) {
