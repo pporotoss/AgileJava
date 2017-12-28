@@ -23,6 +23,7 @@ public class Student {
     private String middleName;
     private String lastName;
     private List<Integer> charges = new ArrayList<>();
+    private String id;
 
     public Student(String fullName) {
         this.name = fullName;
@@ -128,6 +129,14 @@ public class Student {
             total += charge;
         }
         return total;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public enum Grade{

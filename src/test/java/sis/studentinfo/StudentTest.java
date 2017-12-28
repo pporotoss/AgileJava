@@ -1,11 +1,8 @@
 package sis.studentinfo;
 
 import org.junit.Test;
-import sis.studentinfo.Student;
-import sis.studentinfo.StudentNameFormatException;
 
 import java.util.logging.Handler;
-import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
@@ -70,7 +67,7 @@ public class StudentTest {
         assertFalse(student.isFullTime());
 
         student.addCredits(5);
-        assertEquals(student.CREDITS_REQUIRED_FOR_FULL_TIME, student.getCredits());
+        assertEquals(Student.CREDITS_REQUIRED_FOR_FULL_TIME, student.getCredits());
         assertTrue(student.isFullTime());
     }
 
