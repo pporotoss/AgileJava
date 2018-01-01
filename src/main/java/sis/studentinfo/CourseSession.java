@@ -11,8 +11,8 @@ public class CourseSession extends Session {
 //    public static final String ROSTER_REPORT_FOOTER = NEWLINE + "# students = ";
     private static int count;
 
-    protected CourseSession(String department, String number, Date startDate) {
-        super(department, number, startDate);
+    protected CourseSession(Course course, Date startDate) {
+        super(course, startDate);
         CourseSession.incrementCount();
     }
 
@@ -33,8 +33,8 @@ public class CourseSession extends Session {
         return 16;
     }
     
-    public static Session create(String department, String number, Date startDate) {
-        return new CourseSession(department, number, startDate);
+    public static Session create(Course course, Date startDate) {
+        return new CourseSession(course, startDate);
     }
     
 }

@@ -2,6 +2,7 @@ package sis.report;
 
 import org.junit.Before;
 import org.junit.Test;
+import sis.studentinfo.Course;
 import sis.studentinfo.CourseSession;
 import sis.studentinfo.DateUtil;
 import sis.studentinfo.Student;
@@ -15,7 +16,7 @@ public class CourseSessionTest extends SessionTest {
     @Test
     public void testCourseDates() {
         Date startDate = DateUtil.createDate(2003, 1, 6);
-        Session session = createSession("ENGL", "200", startDate);
+        Session session = createSession(createCourse(), startDate);
         Date sixteenWeeksOut = new DateUtil().createDate(2003, 4, 25);
         assertEquals(sixteenWeeksOut, session.getEndDate());
     }
@@ -23,14 +24,18 @@ public class CourseSessionTest extends SessionTest {
     @Test
     public void testCount() {
         CourseSession.resetCount();
-        createSession("", "", new Date());
+        createSession(createCourse(), new Date());
         assertEquals(1, CourseSession.getCount());
-        createSession("", "", new Date());
+        createSession(createCourse(), new Date());
         assertEquals(2, CourseSession.getCount());
     }
     
+    private Course createCourse() {
+        return new Course("ENGL", "101");
+    }
+    
     @Override
-    protected Session createSession(String department, String number, Date startDate) {
-        return CourseSession.create(department, number, startDate);
+    protected Session createSession(Course course, Date startDate) {
+        return CourseSession.create(course, startDate);
     }
 }

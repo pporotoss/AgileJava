@@ -2,6 +2,7 @@ package sis.report;
 
 import org.junit.Before;
 import org.junit.Test;
+import sis.studentinfo.Course;
 import sis.studentinfo.CourseSession;
 import sis.studentinfo.Student;
 import sis.studentinfo.StudentNameFormatException;
@@ -25,11 +26,11 @@ public abstract class SessionTest {
     @Before
     public void setUp() {
         startDate = createDate(2003, 1, 6);
-        session = createSession("ENGL", "101", startDate);
+        session = createSession(new Course("ENGL", "101"), startDate);
         session.setNumberOfCredits(CREDITS);
     }
     
-    protected abstract Session createSession(String department, String number, Date startDate);
+    protected abstract Session createSession(Course course, Date startDate);
     
     @Test
     public void testCreate() {
@@ -59,22 +60,22 @@ public abstract class SessionTest {
     @Test
     public void testComparable() {
         final Date date = new Date();
-        Session sessionA = CourseSession.create("CMSC", "101", date);
-        Session sessionB = CourseSession.create("ENGL", "101", date);
+        Session sessionA = CourseSession.create(new Course("CMSC", "101"), date);
+        Session sessionB = CourseSession.create(new Course("ENGL", "101"), date);
         assertTrue(sessionA.compareTo(sessionB) < 0);
         assertTrue(sessionB.compareTo(sessionA) > 0);
         
-        Session sessionC = CourseSession.create("CMSC", "101", date);
+        Session sessionC = CourseSession.create(new Course("CMSC", "101"), date);
         assertEquals(0, sessionA.compareTo(sessionC));
         
-        Session sessionD = CourseSession.create("CMSC", "210", date);
+        Session sessionD = CourseSession.create(new Course("CMSC", "210"), date);
         assertTrue(sessionC.compareTo(sessionD) < 0);
         assertTrue(sessionD.compareTo(sessionC) > 0);
     }
     
     @Test
     public void testSessionLength() {
-        Session session = createSession("", "", new Date());
+        Session session = createSession(new Course("", ""), new Date());
         assertTrue(session.getSessionLength() > 0);
     }
     

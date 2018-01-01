@@ -139,7 +139,7 @@ public class Student {
         return id;
     }
 
-    public enum Grade{
+    public enum Grade {
         A(4), B(3), C(2), D(1), F(0);
         
         private int points;
@@ -151,5 +151,37 @@ public class Student {
         public int getPoints() {
             return this.points;
         }
+    }
+    
+    public enum Flag {
+        ON_CAMPUS(1), TAX_EXEMPT(2), MINOR(4), TROUBLEMAKER(8);
+        
+        private int mask;
+        
+        private Flag(int mask) {
+            this.mask = mask;
+        }
+    }
+    
+    private int settings = 0x0;
+    
+    public void set(Flag... flags) {
+        for(Flag flag : flags) {
+            settings |= flag.mask;
+        }
+    }
+    
+    public void unset(Flag... flags) {
+        for (Flag flag : flags) {
+            settings &= ~flag.mask;
+        }
+    }
+    
+    public boolean isOn(Flag flag) {
+        return (settings & flag.mask) == flag.mask;
+    }
+    
+    public boolean isOff(Flag flag) {
+        return !isOn(flag);
     }
 }
