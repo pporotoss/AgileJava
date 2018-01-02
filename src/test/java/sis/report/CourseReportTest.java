@@ -7,7 +7,6 @@ import sis.studentinfo.CourseSession;
 import java.util.Date;
 
 import static com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Text.NEW_LINE;
-import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 public class CourseReportTest {

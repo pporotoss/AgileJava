@@ -11,7 +11,8 @@ import static org.junit.Assert.assertTrue;
 
 public class CourseTest {
 
-    @Test
+    @
+            Test
     public void testCreate() {
         Course course = new Course("CMSC", "120");
         assertEquals("CMSC", course.getDepartment());
