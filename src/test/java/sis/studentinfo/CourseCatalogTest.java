@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import sis.report.Session;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -28,13 +29,14 @@ public class CourseCatalogTest {
 
         session2 = CourseSession.create(course2, DateUtil.createDate(1, 17, 2005));
         session2.setNumberOfCredits(5);
+        session2.enroll(new Student("a"));
 
         catalog.add(session1);
         catalog.add(session2);
     }
 
     @Test
-    public void testStoreAndLoad() {
+    public void testStoreAndLoad() throws Exception {
         final String filename = "CourseCatalogTest.testAdd.txt";
         catalog.store(filename);
         catalog.clearAll();
@@ -45,6 +47,11 @@ public class CourseCatalogTest {
         assertEquals(2, sessions.size());
         assertSession(session1, sessions.get(0));
         assertSession(session2, sessions.get(1));
+
+        Session session = sessions.get(1);
+        assertSession(session2, session);
+        Student student = session.getAllStudents().get(0);
+        assertEquals("a", student.getLastName());
     }
 
     private void assertSession(Session expected, Session retrieved) {

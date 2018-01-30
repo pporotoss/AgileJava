@@ -3,17 +3,23 @@ package sis.report;
 import sis.studentinfo.Course;
 import sis.studentinfo.Student;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
-public abstract class Session implements Comparable<Session>, Iterable<Student>{
+public abstract class Session implements Comparable<Session>, Iterable<Student>, Serializable{
+    public static final long serialVersionUID = 1L;
     private static int count;
     private Course course;
-    private List<Student> students = new ArrayList<>();
+    private transient List<Student> students = new ArrayList<>();
     private Date startDate;
     private int numberOfCredits;
     private URL url;
+    private String name;
 
     protected Session (Course course, Date startDate) {
         this.course = course;
@@ -123,5 +129,23 @@ public abstract class Session implements Comparable<Session>, Iterable<Student>{
 
     public int getNumberOfCredits() {
         return this.numberOfCredits;
+    }
+
+    private void writeObject(ObjectOutputStream output) throws IOException {
+        output.defaultWriteObject();
+        output.writeInt(students.size());
+        for(Student student : students) {
+            output.writeObject(student.getLastName());
+        }
+    }
+
+    private void readObject(ObjectInputStream input) throws IOException, ClassNotFoundException {
+        input.defaultReadObject();
+        students = new ArrayList<>();
+        int size = input.readInt();
+        for(int i = 0; i < size; i++) {
+            String lastName = (String) input.readObject();
+            students.add(Student.findByLastName(lastName));
+        }
     }
 }

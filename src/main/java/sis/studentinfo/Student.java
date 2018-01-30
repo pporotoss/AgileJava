@@ -184,4 +184,8 @@ public class Student {
     public boolean isOff(Flag flag) {
         return !isOn(flag);
     }
+
+    public	static	Student	findByLastName(String	lastName)	{
+        return	new	Student(lastName);
+    }
 }

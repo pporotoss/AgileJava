@@ -23,29 +23,14 @@ public class CourseCatalog {
     }
 
     public void store(String filename) throws IOException{
-        try(DataOutputStream output = new DataOutputStream(new FileOutputStream(filename));){
-            output.writeInt(sessions.size());
-            for(Session session : sessions) {
-                output.writeLong(session.getStartDate().getTime());
-                output.writeInt(session.getNumberOfCredits());
-                output.writeUTF(session.getDepartment());
-                output.writeUTF(session.getNumber());
-            }
+        try(ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(filename));){
+            output.writeObject(sessions);
         }
     }
 
-    public void load(String filename) throws IOException {
-        try(DataInputStream input = new DataInputStream(new FileInputStream(filename))) {
-            int numberOfSessions = input.readInt();
-            for(int i = 0; i < numberOfSessions; i++) {
-                Date startDate = new Date(input.readLong());
-                int credits = input.readInt();
-                String department = input.readUTF();
-                String number = input.readUTF();
-                Course course = new Course(department, number);
-                Session session = CourseSession.create(course, startDate);
-                sessions.add(session);
-            }
+    public void load(String filename) throws IOException, ClassNotFoundException {
+        try(ObjectInputStream input = new ObjectInputStream(new FileInputStream(filename))) {
+            sessions = (List<Session>) input.readObject();
         }
     }
 }
